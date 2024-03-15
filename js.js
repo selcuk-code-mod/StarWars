@@ -120,6 +120,21 @@ const data = [
   },
 ];
 
+let homeworldRaw = data.map((character) => character.homeworld);
+console.log(homeworldRaw);
+homeworldRaw = homeworldRaw.map((homeworld) =>
+  homeworld !== undefined && homeworld !== null
+    ? homeworld.toLowerCase()
+    : "other"
+);
+console.log(homeworldRaw);
+
+let homeworldsUnique = [...new Set(homeworldRaw)];
+console.log(homeworldsUnique);
+
+let homeworlds = homeworldsUnique;
+console.log(homeworlds);
+
 const row = document.querySelector(".row");
 const renderBtn = document.querySelector(".renderBtn");
 document.getElementById("btnBtn").style.backgroundColor = "#006241";
@@ -130,7 +145,7 @@ function renderCharacters() {
       <img class="img-fluid" src="${characterFirst.pic}">
       
       <h4>${characterFirst.name}</h4>
-      <h5>${characterFirst.homeworld}</h5>
+      <h5>${characterFirst.homeworld || "Unknown"}</h5>
     </div>`;
       renderBtn.textContent = "Hide Characters";
 
