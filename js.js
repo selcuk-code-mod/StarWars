@@ -87,7 +87,7 @@ const data = [
     id: 15,
     name: "Greedo",
     pic: "https://vignette.wikia.nocookie.net/starwars/images/c/c6/Greedo.jpg",
-    homeworld: "Rodia",
+    homeworld: "rodia",
   },
   {
     id: 16,
@@ -111,6 +111,7 @@ const data = [
     id: 20,
     name: "Yoda",
     pic: "https://vignette.wikia.nocookie.net/starwars/images/d/d6/Yoda_SWSB.png",
+    homeworld: "other",
   },
   {
     id: 21,
@@ -119,21 +120,6 @@ const data = [
     homeworld: "naboo",
   },
 ];
-
-let homeworldRaw = data.map((character) => character.homeworld);
-console.log(homeworldRaw);
-homeworldRaw = homeworldRaw.map((homeworld) =>
-  homeworld !== undefined && homeworld !== null
-    ? homeworld.toLowerCase()
-    : "other"
-);
-console.log(homeworldRaw);
-
-let homeworldsUnique = [...new Set(homeworldRaw)];
-console.log(homeworldsUnique);
-
-let homeworlds = homeworldsUnique;
-console.log(homeworlds);
 
 const row = document.querySelector(".row");
 const renderBtn = document.querySelector(".renderBtn");
@@ -157,3 +143,70 @@ function renderCharacters() {
     document.getElementById("btnBtn").style.backgroundColor = "#006241";
   }
 }
+
+let homeworldRaw = data.map((character) => character.homeworld);
+console.log(homeworldRaw);
+homeworldRaw = homeworldRaw.map((homeworld) =>
+  homeworld !== undefined && homeworld !== null
+    ? homeworld.toLowerCase()
+    : "other"
+);
+console.log(homeworldRaw);
+
+let homeworldsUnique = [...new Set(homeworldRaw)];
+console.log(homeworldsUnique);
+
+let homeworlds = homeworldsUnique;
+console.log(homeworlds);
+
+const inputClass = document.querySelector(".inputClass");
+
+for (let i = 0; i < homeworlds.length; i++) {
+  inputClass.innerHTML += `
+  <div class="formCheck ps-4">
+    <input
+      class="formCheckInput"
+      type="radio"
+      name="homeworld"
+      value="${homeworlds[i]}"
+      id="homeworld-${homeworlds[i]}"
+    />
+    <label class="formCheckLabel text-white" for="homeworld-${homeworlds[i]}">
+    ${homeworlds[i]}
+    </label>
+  </div>
+</div>`;
+}
+
+const inputFirst = document.querySelectorAll(".formCheckInput");
+
+inputFirst.forEach(function (inputSecond) {
+  inputSecond.addEventListener("click", function () {
+    selectedInput = this.value;
+
+    const filteredHomeworld = data.filter(
+      (item) => item.homeworld === selectedInput
+    );
+
+    if (row == "") {
+      for (const selected of filteredHomeworld) {
+        row.innerHTML += `<div class="  col-12 col-lg-3 col-md-4 gy-5 me-3 charactersCard border border-2 rounded-2 border-warning text-warning bg-white">
+        <img class="img-fluid" src="${selected.pic}">
+        
+        <h4>${selected.name}</h4>
+        <h5>${selected.homeworld}</h5>
+      </div>`;
+      }
+    } else {
+      row.innerHTML = "";
+      for (const selected of filteredHomeworld) {
+        row.innerHTML += `<div class="  col-12 col-lg-3 col-md-4 gy-5 me-3 charactersCard border border-2 rounded-2 border-warning text-warning bg-white">
+        <img class="img-fluid" src="${selected.pic}">
+        
+        <h4>${selected.name}</h4>
+        <h5>${selected.homeworld}</h5>
+      </div>`;
+      }
+    }
+  });
+});
